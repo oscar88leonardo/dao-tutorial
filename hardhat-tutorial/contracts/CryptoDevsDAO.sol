@@ -123,7 +123,7 @@ contract CryptoDevsDAO is Ownable {
         activeProposalOnly(proposalIndex){
             Proposal storage proposal = proposals[proposalIndex];
 
-            uint256 voterNFTBalance = cryptoDevsNFT.balanceOf(msg.sender, i);
+            uint256 voterNFTBalance = cryptoDevsNFT.balanceOf(msg.sender);
             uint256 numVotes = 0;
 
             // Calculate how many NFT are owned by the voter
@@ -137,7 +137,7 @@ contract CryptoDevsDAO is Ownable {
             }
             require(numVotes > 0, "ALREADY_VOTED");
 
-            if (vote == vote.YAY){
+            if (vote == Vote.YAY){
                 proposal.yayVotes += numVotes;
             } else{
                 proposal.nayVotes += numVotes;
@@ -152,7 +152,7 @@ contract CryptoDevsDAO is Ownable {
     // and if the proposal has not yet been executed
     modifier inactiveProposalOnly(uint256 proposalIndex) {
         require(proposals[proposalIndex].deadline <= block.timestamp, "DEADLINE_NOT_EXCEEDED");
-        require(proposal[proposalIndex].executed == false, "PROPOSAL_ALREADY_EXECUTED" );
+        require(proposals[proposalIndex].executed == false, "PROPOSAL_ALREADY_EXECUTED" );
         _;
     }
 
